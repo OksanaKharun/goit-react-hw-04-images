@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Modal = ({ largeImageURL, onClose }) => {
   const handleClick = (e) => {
@@ -7,9 +7,23 @@ const Modal = ({ largeImageURL, onClose }) => {
     }
   };
 
+   useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
   return (
     <div className="Overlay" onClick={handleClick}>
-      <div className="Modal">
+      <div className="Modal" >
         <img src={largeImageURL} alt="" />
       </div>
     </div>
